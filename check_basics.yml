@@ -12,6 +12,9 @@
     - name: Ensure media user exists
       user: name=media comment="Media User" uid=20000 shell=/bin/bash generate_ssh_key=yes
 
+    - name: Ensure user belongs to group
+      user: user=media groups=projectx append=yes
+
 - hosts: all:!linuxcbtbuild1
   remote_user: root
 
