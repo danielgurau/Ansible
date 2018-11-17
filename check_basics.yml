@@ -1,7 +1,10 @@
 ---
 - hosts: all
   remote_user: ansible
-  
+
   tasks:
     - name: Ensure /etc/hosts exists and mode=0644
       file: path=/etc/hosts mode=0644 state=file
+
+    - name: Ensure /etc/hostname exists and mode=0644
+      file: path=/etc/hostname mode=0644 state=file
