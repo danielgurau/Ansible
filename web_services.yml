@@ -15,6 +15,7 @@
   tasks:
     - name: Ensure Apache is the latest and installed
       yum: name=httpd state=latest
+
     - name: Ensure Apache is enabled
       service: name=httpd state=started
 
