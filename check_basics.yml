@@ -9,8 +9,12 @@
     - name: Ensure /etc/hostname exists and mode=0644
       file: path=/etc/hostname mode=0644 state=file
 
+- hosts: all:!linuxcbtbuild1
+  remote_user: root
+
+  tasks:
     - name: Ensure Time is SYNCHED using ntpdate
-      shell: ntpdate 192.168.0.201 || /bin/true
+      shell: ntpdate 192.168.0.201
 
 - hosts: redhat
   remote_user: root
