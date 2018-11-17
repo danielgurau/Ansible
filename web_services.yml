@@ -1,0 +1,20 @@
+---
+- hosts: ubuntu:&webservers
+  remote_user: root
+
+  tasks:
+    - name: Ensure Apache is the latest and installed
+      apt: pkg=apache2 state=latest
+
+    - name: Ensure whois is latest and installed
+      apt: pkg=whois state=latest
+
+- hosts: redhat:&webservers
+  remote_user: root
+
+  tasks:
+    - name: Ensure Apache is the latest and installed
+      yum: name=httpd state=latest
+
+    - name: Ensure whois is the latest and installed
+      yum: name=whois state=latest

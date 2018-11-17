@@ -1,0 +1,17 @@
+---
+- hosts: ubuntu
+  remote_user: root
+
+  tasks:
+    - name: Update APT
+      apt: update_cache=yes
+
+    - name: Update Packages
+      apt: upgrade=yes
+
+- hosts: redhat
+  remote_user: root
+
+  tasks:
+    - name: Update YUM
+      yum: name=* state=latest
