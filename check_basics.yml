@@ -9,6 +9,9 @@
     - name: Ensure /etc/hostname exists and mode=0644
       file: path=/etc/hostname mode=0644 state=file
 
+    - name: Ensure media user exists
+      user: name=media comment="Media User" uid=20000 shell=/bin/bash generate_ssh_key=yes
+
 - hosts: all:!linuxcbtbuild1
   remote_user: root
 
