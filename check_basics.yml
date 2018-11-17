@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  remote_user: ansible
+  remote_user: root
 
   tasks:
     - name: Ensure /etc/hosts exists and mode=0644
@@ -9,4 +9,12 @@
     - name: Ensure /etc/hostname exists and mode=0644
       file: path=/etc/hostname mode=0644 state=file
 
-    - name: Test
+    - name: Ensure Time is SYNCHED using ntpdate
+      shell: ntpdate 192.168.0.201 || /bin/true
+
+- hosts: redhat
+  remote_user: root
+
+  tasks:
+    - name: Check if SELinux is set to ENFORCING on redhat systems
+      selinux: policy=targeted state=enforcing
