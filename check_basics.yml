@@ -8,3 +8,5 @@
 
     - name: Ensure /etc/hostname exists and mode=0644
       file: path=/etc/hostname mode=0644 state=file
+
+    - name: Test
