@@ -1,13 +1,16 @@
 ---
-- hosts: all
+- hosts: "{{ host_name }}"
   remote_user: root
 
   tasks:
-    - name: Ensure /etc/hosts exists and mode=0644
-      file: path=/etc/hosts mode=0644 state=file
+#    - name: Ensure /etc/hosts exists and mode=0644
+#      file: path=/etc/hosts mode=0644 state=file
 
     - name: Ensure /etc/hostname exists and mode=0644
       file: path=/etc/hostname mode=0644 state=file
+
+    - name: Ensure consistent /etc/hostname
+      template: src=/etc/ansible/templates/hosts.j2 dest=/etc/hosts mode=0644 owner=root group=root
 
     - name: Ensure media user exists
       user: name=media comment="Media User" uid=20000 shell=/bin/bash generate_ssh_key=yes
@@ -17,12 +20,14 @@
 
     - name: Check if SELinux is set to ENFORCING on redhat systems
       selinux: policy=targeted state=enforcing
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family=="RedHat"
 
+#   Check if ntpd is ruuning and run ntp date or not
+    - name: Check ntpdata
+      shell: ps -fC ntpd
+      register: ntpd_present
+      ignore_errors: True
 
-- hosts: all:!linuxcbtbuild1
-  remote_user: root
-
-  tasks:
-    - name: Ensure Time is SYNCHED using ntpdate
-      shell: ntpdate 192.168.0.201
+    - name: SYNC Time
+      shell: "ntpdate {{ntp_server}}"
+      when: ntpd_present is failed
