@@ -1,0 +1,19 @@
+---
+- hosts: all
+  remote_user: ansible
+
+  tasks:
+    - name: Step 1
+      command: "ping -c 2 192.168.0.1"
+      register: step1_result
+      ignore_errors: True
+
+    - name: Step 2 - Step 1 Good
+      command: echo "HOSTS AVAILABLE"
+      when: step1_result is success
+
+    - name: Step 3 - Step 1 Bad
+      command: echo "ERROR CONTACTING HOSTS"
+      when: step1_result is failed
+
+#      when: ansible_memfree_mb>=512 and ansible_os_family=="RedHat"
