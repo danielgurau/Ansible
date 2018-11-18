@@ -1,23 +1,24 @@
 ---
-- hosts: ubuntu:&webservers
+- hosts: webservers
   remote_user: root
 
   tasks:
     - name: Ensure Apache is the latest and installed
       apt: pkg=apache2 state=latest
+      when: ansible_os_family == "Debian"
 
     - name: Ensure whois is latest and installed
       apt: pkg=whois state=latest
+      when: ansible_os_family == "Debian"
 
-- hosts: redhat:&webservers
-  remote_user: root
-
-  tasks:
     - name: Ensure Apache is the latest and installed
       yum: name=httpd state=latest
+      when: ansible_os_family == "RedHat"
 
     - name: Ensure Apache is enabled
       service: name=httpd state=started
+      when: ansible_os_family == "RedHat"
 
     - name: Ensure whois is the latest and installed
       yum: name=whois state=latest
+      when: ansible_os_family == "RedHat"

@@ -15,16 +15,14 @@
     - name: Ensure user belongs to group
       user: user=media groups=projectx append=yes
 
+    - name: Check if SELinux is set to ENFORCING on redhat systems
+      selinux: policy=targeted state=enforcing
+      when: ansible_os_family == "RedHat"
+
+
 - hosts: all:!linuxcbtbuild1
   remote_user: root
 
   tasks:
     - name: Ensure Time is SYNCHED using ntpdate
       shell: ntpdate 192.168.0.201
-
-- hosts: redhat
-  remote_user: root
-
-  tasks:
-    - name: Check if SELinux is set to ENFORCING on redhat systems
-      selinux: policy=targeted state=enforcing
