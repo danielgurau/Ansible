@@ -1,0 +1,29 @@
+---
+- hosts: webfarm
+  remote_user: root
+
+  tasks:
+    - name: Update Apache config - Debian
+      copy: src=/etc/ansible/templates/apache2.conf dest=/etc/apache2/apache2.conf.ansible
+      when: ansible_os_family == "Debian"
+      notify:
+        - reload apache
+        - restart log
+
+
+    - name: Update Apache config - RedHat
+      copy: src=/etc/ansible/templates/httpd.conf dest=/etc/httpd/conf/httpd.conf.ansible
+      when: ansible_os_family == "RedHat"
+      notify:
+        - reload httpd
+        - restart log
+
+  handlers:
+    - name: reload apache
+      service: name=apache2 state=reloaded
+
+    - name: reload httpd
+      service: name=httpd state=reloaded
+
+    - name: restart log
+      shell: echo "{{ ansible_date_time.iso8601_basic }} - Apache restarted" >> /var/log/apache_reload_restart_log.log
