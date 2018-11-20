@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ host_name }}"
+- hosts: all
   remote_user: root
 
   tasks:
